@@ -1,0 +1,48 @@
+Bugs
+-*editing after column sort results in ArrayOutOfBoundsException
+-hitting cancel on Load Record menu automatically reloads the default record
+
+
+Mandatory Updates
+-Finish Audit statistics calculations
+-export results to document form
+-*allow multiple entries with same name (add id value - establish uniqueness)
+
+
+Optional Updates
+-Make Orange edited text color more visible
+-Exit cell editor when pressing enter key
+-*Make Patient Name editable : will most likely require addition of unique identifiers of each row in xml
+-%Add backup and preventative data-loss protection
+-load records after program startup (loading bar)
+-Make Patient panel left-right scrollable
+
+*:completed
+%:in progress
+
+
+
+
+Audit Pathology Summary
+
+1,136 # of mammogram cases
+198 # of mammogram cases Bi-RADS 0,4,5
+27 # of biopsies performed
+22 # of BI-RADS category 4 -- suspicious
+5 # of BI-RADS category 5 -- highly suspicious
+15 # of biopsy pathologies that were malignant
+10 # of BI-RADS category 4 that were malignant
+5 # of BI-RADS category 5 that were malignant
+12 # of biopsies pathologies that were benign (biopsy > 3)
+1 # of cases from BI-RADS 4 and 5 that were lost (no associated pathology).
+7 # of ductal carcinoma in situ (where Biopsy == 0)
+8 # of invasive ductal carcinoma or invasive lobular carcinoma (where Biopsy == 2 || 1?)
+4 # of invasive ductal or lobular carcinoma w/ axillary sampling performed (where Biopsy == 2 || )
+15 # of true positives (TP)
+12 # of false positives(FP)
+
+55.6% positive predictive value (BI-RADS 4 and 5)
+45.5% positive predictive value (BI-RADS 4)
+100% positive predictive value (BI-RADS 5)
+13.2% cancer detection rate (per 1000 exams)
+17.4% recall (recall rate)
