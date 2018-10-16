@@ -177,6 +177,7 @@ public class CategoryView extends JPanel implements WindowListener{
 		UtilDateModel model = new UtilDateModel();
 		JDatePanelImpl datePanel = new JDatePanelImpl(model);
 		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel);
+		JTextField provider = new JTextField();
 		final JComponent[] inputs = new JComponent[] {
 				new JLabel("Patient Name"),
 				patientName,
@@ -189,7 +190,10 @@ public class CategoryView extends JPanel implements WindowListener{
 				new JLabel("Biopsy Result"),
 				biopsy,
 				new JLabel("Date of Imaging"),
-				datePicker
+				datePicker,
+				new JLabel("Provider"),
+				provider
+				
 		};
 		
 		int c = JOptionPane.showConfirmDialog(null, inputs, "Add Patient", JOptionPane.PLAIN_MESSAGE);
@@ -212,7 +216,7 @@ public class CategoryView extends JPanel implements WindowListener{
 			}*/
 			
 			else{
-				Patient newPatient = new Patient(patientName.getText(), ((ComboItem)screening.getSelectedItem()).getValue(), ((ComboItem)diagnostic.getSelectedItem()).getValue(), ((ComboItem)ultrasound.getSelectedItem()).getValue(), ((ComboItem)biopsy.getSelectedItem()).getValue(), retrieveDate(datePicker), "", "");
+				Patient newPatient = new Patient(patientName.getText(), ((ComboItem)screening.getSelectedItem()).getValue(), ((ComboItem)diagnostic.getSelectedItem()).getValue(), ((ComboItem)ultrasound.getSelectedItem()).getValue(), ((ComboItem)biopsy.getSelectedItem()).getValue(), retrieveDate(datePicker), provider.getText(), "");
 				
 				newPatient.setAdded(true);
 				controller.getPatients().add(newPatient);
