@@ -72,6 +72,7 @@ public class RecordReader {
 					String diag_cat = attributes.getValue("diagnostic") == null ? "-1" : attributes.getValue("diagnostic");
 					String ultrasound = attributes.getValue("ultrasound") == null ? "-1" : attributes.getValue("ultrasound");
 					String biopsy = attributes.getValue("biopsy") == null ? "-1" : attributes.getValue("biopsy");
+					String provider = attributes.getValue("provider") == null ? "" : attributes.getValue("provider");
 					String comments = attributes.getValue("comments") == null ? "" : attributes.getValue("comments");
 					
 					Patient patient = new Patient(attributes.getValue("name"),
@@ -80,6 +81,7 @@ public class RecordReader {
 												Integer.parseInt(ultrasound),
 												Integer.parseInt(biopsy),
 												formatter.parse(attributes.getValue("date")),
+												provider,
 												comments);
 					if(attributes.getValue("id") != null){
 						patient.setId(Long.parseLong(attributes.getValue("id")));

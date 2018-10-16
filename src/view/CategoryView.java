@@ -212,7 +212,7 @@ public class CategoryView extends JPanel implements WindowListener{
 			}*/
 			
 			else{
-				Patient newPatient = new Patient(patientName.getText(), ((ComboItem)screening.getSelectedItem()).getValue(), ((ComboItem)diagnostic.getSelectedItem()).getValue(), ((ComboItem)ultrasound.getSelectedItem()).getValue(), ((ComboItem)biopsy.getSelectedItem()).getValue(), retrieveDate(datePicker), "");
+				Patient newPatient = new Patient(patientName.getText(), ((ComboItem)screening.getSelectedItem()).getValue(), ((ComboItem)diagnostic.getSelectedItem()).getValue(), ((ComboItem)ultrasound.getSelectedItem()).getValue(), ((ComboItem)biopsy.getSelectedItem()).getValue(), retrieveDate(datePicker), "", "");
 				
 				newPatient.setAdded(true);
 				controller.getPatients().add(newPatient);
@@ -359,6 +359,8 @@ public class CategoryView extends JPanel implements WindowListener{
                 TitledBorder.LEFT,
                 TitledBorder.TOP));
 		JTable statsTable = new JTable(statsTableModel);
+		statsTable.setFocusable(false);
+		statsTable.setRowSelectionAllowed(false);
 		statsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		statsTable.setOpaque(false);
 		((DefaultTableCellRenderer)statsTable.getDefaultRenderer(Object.class)).setOpaque(false);
@@ -376,6 +378,8 @@ public class CategoryView extends JPanel implements WindowListener{
                 TitledBorder.LEFT,
                 TitledBorder.TOP));
 		JTable auditTable = new JTable(auditTableModel);
+		auditTable.setFocusable(false);
+		auditTable.setRowSelectionAllowed(false);
 		auditTable.setOpaque(false);
 		((DefaultTableCellRenderer)auditTable.getDefaultRenderer(Object.class)).setOpaque(false);
 		auditTable.getColumnModel().getColumn(0).setMinWidth(50);

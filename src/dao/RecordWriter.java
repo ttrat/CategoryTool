@@ -22,7 +22,7 @@ public class RecordWriter {
 	private SAXBuilder builder = new SAXBuilder();
 	
 	private long max;
-	private boolean update = false;
+	private boolean update = true;
 	
 	private final String PATIENT_ELEMENT_NAME = "patient";
 	
@@ -107,6 +107,7 @@ public class RecordWriter {
         element.setAttribute("ultrasound", Integer.toString(patient.getUltrasound()));
         element.setAttribute("biopsy", Integer.toString(patient.getBiopsy_result()));
         element.setAttribute("date", formatter.format(patient.getDate()));
+        element.setAttribute("provider", patient.getProvider());
         element.setAttribute("comments", patient.getComments());
         
         document.getRootElement().addContent(element);
@@ -156,6 +157,7 @@ public class RecordWriter {
 	        	 element.getAttribute("ultrasound").setValue(String.valueOf(patient.getUltrasound()));
 	        	 element.getAttribute("biopsy").setValue(String.valueOf(patient.getBiopsy_result()));
 	        	 element.getAttribute("date").setValue(String.valueOf(formatter.format(patient.getDate())));
+	        	 element.getAttribute("provider").setValue(String.valueOf(patient.getProvider()));
 	        	 element.getAttribute("comments").setValue(String.valueOf(patient.getComments()));
 	         }
         }
@@ -218,6 +220,9 @@ public class RecordWriter {
 	         
 	         if(element.getAttribute("id") == null){
 	        	 element.setAttribute("id", Long.toString(max));
+	         }
+	         if(element.getAttribute("provider") == null){
+	        	 element.setAttribute("provider", "");
 	         }
         }
 	}

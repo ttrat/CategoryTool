@@ -100,7 +100,7 @@ public class PatientTable extends JTable implements TableCellRenderer{
 				column.setHeaderRenderer(iconHeaderRenderer);
 				column.setHeaderValue(new TextAndIcon("", new ImageIcon(cl.getResource("images/icon_delete_sm_02.png"))));
 			}
-			else if(i==1 || i==9){
+			else if(i==1 || i==9 || i==10){
 				column.setCellEditor(new NameCellEditor());
 			}
 			else if(i==2 || i==3 || i==4 || i==5){
@@ -146,6 +146,7 @@ public class PatientTable extends JTable implements TableCellRenderer{
 	        }
 	        else{
 	        	c.setForeground(Color.BLACK);
+	        	c.setBackground(Color.WHITE);
 	        }
 
 	        return c;
