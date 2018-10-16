@@ -107,6 +107,7 @@ public class RecordWriter {
         element.setAttribute("ultrasound", Integer.toString(patient.getUltrasound()));
         element.setAttribute("biopsy", Integer.toString(patient.getBiopsy_result()));
         element.setAttribute("date", formatter.format(patient.getDate()));
+        element.setAttribute("comments", patient.getComments());
         
         document.getRootElement().addContent(element);
     }
@@ -155,6 +156,7 @@ public class RecordWriter {
 	        	 element.getAttribute("ultrasound").setValue(String.valueOf(patient.getUltrasound()));
 	        	 element.getAttribute("biopsy").setValue(String.valueOf(patient.getBiopsy_result()));
 	        	 element.getAttribute("date").setValue(String.valueOf(formatter.format(patient.getDate())));
+	        	 element.getAttribute("comments").setValue(String.valueOf(patient.getComments()));
 	         }
         }
 	}

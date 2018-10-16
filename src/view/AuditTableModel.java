@@ -27,7 +27,6 @@ public class AuditTableModel extends AbstractTableModel{
 												"# of BI-RADS category 4 that were malignant",
 												"# of BI-RADS category 5 that were malignant",
 												"# of biopsy pathologies that were benign",
-												"# of cases from BI-RADS 4 and 5 that were lost",
 												"# of ductal carcinoma in situ",
 												"# of invasive ductal carcinoma or invasive lobular carcinoma",
 												"# of invasive ductal or lobular carcinoma w/ axillary sampling performed",
@@ -83,12 +82,14 @@ public class AuditTableModel extends AbstractTableModel{
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Object value = null;
 		
+		int tableSize = auditStats.getCounts().length;
+		
 		if(columnIndex == COUNT_COLUMN){
-			if(rowIndex < 15){
+			if(rowIndex < tableSize){
 				value = auditStats.getCounts()[rowIndex];
 			}
 			else{
-				value = auditStats.getPercents()[rowIndex - 15];
+				value = auditStats.getPercents()[rowIndex - tableSize];
 			}
 		}
 		else if (columnIndex == DESCRIPTION_COLUMN){

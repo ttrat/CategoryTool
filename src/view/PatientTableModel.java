@@ -23,8 +23,9 @@ public class PatientTableModel extends AbstractTableModel{
 	public static final int DATE_COLUMN = 6;
 	public static final int ADDED_COLUMN = 7;
 	public static final int EDITED_COLUMN = 8;
+	public static final int COMMENTS_COLUMN = 9;
 
-	private static final String[] COLUMNS = {"", "Name", "Screening", "Diagnostic", "Ultrasound", "Biopsy Result", "Date", "", ""};
+	private static final String[] COLUMNS = {"", "Name", "Screening", "Diagnostic", "Ultrasound", "Biopsy Result", "Date", "", "", "Comments"};
 	
 //	private static final Class<?>[] TYPES = { Boolean.class, String.class, Integer.class, Integer.class, String.class };
 	
@@ -86,6 +87,8 @@ public class PatientTableModel extends AbstractTableModel{
 			value = row.getAdded();
 		else if(columnIndex == EDITED_COLUMN)
 			value = row.getEdited();
+		else if(columnIndex == COMMENTS_COLUMN)
+			value = row.getComments();
 		
 		return value;
 	}
@@ -115,6 +118,8 @@ public class PatientTableModel extends AbstractTableModel{
 			value = row.getAdded();
 		else if(columnIndex == EDITED_COLUMN)
 			value = row.getEdited();
+		else if(columnIndex == COMMENTS_COLUMN)
+			value = row.getComments();
 		
 		return value;
 	}
@@ -140,6 +145,8 @@ public class PatientTableModel extends AbstractTableModel{
 	    	return Integer.class;
 	    else if (columnIndex == DATE_COLUMN)
 	        return Date.class;
+	    else if (columnIndex == COMMENTS_COLUMN)
+	    	return String.class;
 	    
 	    return super.getColumnClass(columnIndex);
 	}
@@ -198,6 +205,9 @@ public class PatientTableModel extends AbstractTableModel{
 		}
 		else if(columnIndex == DATE_COLUMN){
 			rows.get(rowIndex).setDate((Date)obj);
+		}
+		else if(columnIndex == COMMENTS_COLUMN){
+			rows.get(rowIndex).setComments(obj.toString());
 		}
 		fireTableDataChanged();
 	}

@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class Constants {
 	
-	public static final String RELEASE_VERSION = "0.8.2";
+	public static final String RELEASE_VERSION = "0.8.7";
 	
 	public static final int FRAME_WIDTH = 1500;
 	public static final int FRAME_HEIGHT = 700;

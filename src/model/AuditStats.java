@@ -13,7 +13,6 @@ public class AuditStats {
 	private int numCatFourMalignant = 0;
 	private int numCatFiveMalignant = 0;
 	private int numBiopsiesBenign = 0;
-	private int numLost45 = 0;
 	private int numDuctalCarcinoma = 0;
 	private int numInvDuctalLobular = 0;
 	private int numInvDuctalLobularAxillary = 0;
@@ -47,112 +46,60 @@ public class AuditStats {
 		this.percents = percents;
 	}
 
-	public void calculateStats(List<Patient> patients){
-		
-		Boolean birads0;
-		Boolean birads4;
-		Boolean birads5;
-		Boolean malignant;
-//		Boolean benign;
-//		Boolean falsePositive;
-//		Boolean truePositive;
-		Boolean recall; //if has diagnostic or ultrasound (not N/A)
-		//what is positive predictive value?
-//		Boolean lost; //cat 4 or 5 but no biopsy?
-		
-		numCases = patients.size();
-		
-		clearCounters();
-		
-		for(Patient patient : patients){
-			
-			////New Calculations////
-			/**
-			 * Basic Assumptions
-			 */
-			birads0 = patient.getDiagnostic_category() == 0;
-			birads4 = patient.getDiagnostic_category() == 4;
-			birads5 = patient.getDiagnostic_category() == 5;
-			
-			malignant = (patient.getBiopsy_result() > -1) && (patient.getBiopsy_result() < 4);
-			
-			recall = patient.getDiagnostic_category() != -1 || patient.getUltrasound() != -1;
-			
-//			lost = (birads4 || birads5) && patient.getBiopsy_result() == -1;
-			/**
-			 * 
-			 */
-			
-			
-			if((birads4 || birads5) && malignant){
-				numTruePositive++;
-			}
-			if((birads4 || birads5) && !malignant){
-				numFalsePositive++;
-			}
-			
-			if(birads0 || birads4 || birads5){
-				numCases045++;
-			}
-			if(birads4){
-				numCatFour++;
-			}
-			if(birads5){
-				numCatFive++;
-			}
-			
-			if(patient.getBiopsy_result() != -1){
-				numBiopsies++;
-				
-				if(malignant){
-					numBiopsiesMalignant++;
-					
-					if(birads4){
-						numCatFourMalignant++;
-					}
-					if(birads5){
-						numCatFiveMalignant++;
-					}
-				}
-				else if(!malignant){
-					numBiopsiesBenign++;
-				}
-				
-				if(patient.getBiopsy_result() == 0){
-					numDuctalCarcinoma++;
-				}
-				
-				//TODO: ductal stats?
-//				if(?){
-//					numInvDuctalLobular
-//					numInvDuctalLobularAxillary
-//				}
-			}
-			
-			else{
-				if(birads4 || birads5){
-					numLost45++;
-				}
-			}
-			
-			if(recall){
-				numRecalled++;
-			}
-			
-			//////////////////////////
-			
-		}
-			
-		////new////
-		recallRate = ((double)numRecalled / numCases) * 100;
-		posPredFour = numCatFour > 0 ? ((double)numCatFourMalignant / (double)numCatFour) * 100 : 0;
-		posPredFive = numCatFive > 0 ? ((double)numCatFiveMalignant / (double)numCatFive) * 100 : 0;
-		posPredFourFive = numCatFour + numCatFive > 0 ? ((double)(numCatFourMalignant + numCatFiveMalignant) / (double)(numCatFour + numCatFive)) * 100 : 0;
-		///////////
-		
-		setCounts(new int[] {numCases, numCases045, numBiopsies, numCatFour, numCatFive, numBiopsiesMalignant, numCatFourMalignant, numCatFiveMalignant, numBiopsiesBenign, numLost45, numDuctalCarcinoma, numInvDuctalLobular, numInvDuctalLobularAxillary, numTruePositive, numFalsePositive});
-		setPercents(new double[] {posPredFourFive, posPredFour, posPredFive, cancerDetectionRate, recallRate});
-	}
+	public void calculateStats(List<Patient> patients) {
+        this.numCases = patients.size();
+        this.clearCounters();
+        for (Patient patient : patients) {
+            Boolean birads0 = patient.getDiagnostic_category() == 0 && patient.getUltrasound() == -1 || patient.getUltrasound() == 0;
+            Boolean birads4 = patient.getDiagnostic_category() == 4 && patient.getUltrasound() == -1 || patient.getUltrasound() == 4;
+            Boolean birads5 = patient.getDiagnostic_category() == 5 && patient.getUltrasound() == -1 || patient.getUltrasound() == 5;
+            Boolean malignant = patient.getBiopsy_result() > -1 && patient.getBiopsy_result() < 4;
+            Boolean recall = patient.getDiagnostic_category() != -1 || patient.getUltrasound() != -1;
+            if ((birads4.booleanValue() || birads5.booleanValue()) && malignant.booleanValue()) {
+                ++this.numTruePositive;
+            }
+            if ((birads4.booleanValue() || birads5.booleanValue()) && !malignant.booleanValue()) {
+                ++this.numFalsePositive;
+            }
+            if (birads0.booleanValue() || birads4.booleanValue() || birads5.booleanValue()) {
+                ++this.numCases045;
+            }
+            if (birads4.booleanValue()) {
+                ++this.numCatFour;
+            }
+            if (birads5.booleanValue()) {
+                ++this.numCatFive;
+            }
+            if (patient.getBiopsy_result() != -1) {
+                ++this.numBiopsies;
+                if (malignant.booleanValue()) {
+                    ++this.numBiopsiesMalignant;
+                    if (birads4.booleanValue()) {
+                        ++this.numCatFourMalignant;
+                    }
+                    if (birads5.booleanValue()) {
+                        ++this.numCatFiveMalignant;
+                    }
+                } else if (!malignant.booleanValue()) {
+                    ++this.numBiopsiesBenign;
+                }
+                if (patient.getBiopsy_result() == 0) {
+                    ++this.numDuctalCarcinoma;
+                }
+            } else if (!birads4.booleanValue()) {
+                birads5.booleanValue();
+            }
+            if (!recall.booleanValue()) continue;
+            ++this.numRecalled;
+        }
+        this.recallRate = (double)this.numRecalled / (double)this.numCases * 100.0;
+        this.posPredFour = this.numCatFour > 0 ? (double)this.numCatFourMalignant / (double)this.numCatFour * 100.0 : 0.0;
+        this.posPredFive = this.numCatFive > 0 ? (double)this.numCatFiveMalignant / (double)this.numCatFive * 100.0 : 0.0;
+        this.posPredFourFive = this.numCatFour + this.numCatFive > 0 ? (double)(this.numCatFourMalignant + this.numCatFiveMalignant) / (double)(this.numCatFour + this.numCatFive) * 100.0 : 0.0;
+        this.cancerDetectionRate = this.numCases > 0 ? (double)this.numBiopsiesMalignant / (double)this.numCases * 100.0 : 0.0;
+        this.setCounts(new int[]{this.numCases, this.numCases045, this.numBiopsies, this.numCatFour, this.numCatFive, this.numBiopsiesMalignant, this.numCatFourMalignant, this.numCatFiveMalignant, this.numBiopsiesBenign, this.numDuctalCarcinoma, this.numInvDuctalLobular, this.numInvDuctalLobularAxillary, this.numTruePositive, this.numFalsePositive});
+        this.setPercents(new double[]{this.posPredFourFive, this.posPredFour, this.posPredFive, this.cancerDetectionRate, this.recallRate});
+    }
 	
 	private void clearCounters(){
 		
@@ -163,7 +110,6 @@ public class AuditStats {
 		numBiopsiesMalignant = 0;
 		numCatFourMalignant = 0;
 		numCatFiveMalignant = 0;
-		numLost45 = 0;
 		numBiopsiesBenign = 0;
 		numDuctalCarcinoma = 0;
 		numInvDuctalLobular = 0;

@@ -39,8 +39,6 @@ public class RecordReader {
 		
 		this.recordHandler = new RecordHandler();
 		
-//		InputStream is = getClass().getResourceAsStream(recordPath);
-		
 		saxParser.parse(recordPath, recordHandler);
 		
 		this.patients = recordHandler.getPatients();
@@ -74,13 +72,15 @@ public class RecordReader {
 					String diag_cat = attributes.getValue("diagnostic") == null ? "-1" : attributes.getValue("diagnostic");
 					String ultrasound = attributes.getValue("ultrasound") == null ? "-1" : attributes.getValue("ultrasound");
 					String biopsy = attributes.getValue("biopsy") == null ? "-1" : attributes.getValue("biopsy");
+					String comments = attributes.getValue("comments") == null ? "" : attributes.getValue("comments");
 					
 					Patient patient = new Patient(attributes.getValue("name"),
 												Integer.parseInt(screen_cat),
 												Integer.parseInt(diag_cat),
 												Integer.parseInt(ultrasound),
 												Integer.parseInt(biopsy),
-												formatter.parse(attributes.getValue("date")));
+												formatter.parse(attributes.getValue("date")),
+												comments);
 					if(attributes.getValue("id") != null){
 						patient.setId(Long.parseLong(attributes.getValue("id")));
 					}

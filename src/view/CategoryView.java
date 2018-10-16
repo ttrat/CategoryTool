@@ -212,7 +212,7 @@ public class CategoryView extends JPanel implements WindowListener{
 			}*/
 			
 			else{
-				Patient newPatient = new Patient(patientName.getText(), ((ComboItem)screening.getSelectedItem()).getValue(), ((ComboItem)diagnostic.getSelectedItem()).getValue(), ((ComboItem)ultrasound.getSelectedItem()).getValue(), ((ComboItem)biopsy.getSelectedItem()).getValue(), retrieveDate(datePicker));
+				Patient newPatient = new Patient(patientName.getText(), ((ComboItem)screening.getSelectedItem()).getValue(), ((ComboItem)diagnostic.getSelectedItem()).getValue(), ((ComboItem)ultrasound.getSelectedItem()).getValue(), ((ComboItem)biopsy.getSelectedItem()).getValue(), retrieveDate(datePicker), "");
 				
 				newPatient.setAdded(true);
 				controller.getPatients().add(newPatient);
@@ -249,63 +249,61 @@ public class CategoryView extends JPanel implements WindowListener{
 	}
 	
 	private void versionNotesAction(){
-		
-		JTextPane notePane = new JTextPane();
-		notePane.setEditable(false);
-		notePane.setBackground(getBackground());
-		
-		StringBuilder str = new StringBuilder();
-		str.append(String.format("VER. %s\n\n", Constants.RELEASE_VERSION));
-		str.append("RELEASE NOTES\n");
-		str.append("-Bug Fix: Resolved error when editing sorted columns.\n");
-		str.append("-Update: Patient names are now editable. Duplicate patient names may be entered.\n");
-		str.append("-Update: Relocated add patient function from the 'File' menu item, into the 'Function' menu item.\n");
-		str.append("-Update: Addition of version release notes.\n");
-		str.append("-Update: Additional audit stats.\n\n");
-		str.append("KNOWN ISSUES \n");
-		str.append("-Clicking cancel on Load Record menu item automatically reloads the default record\n\n");
-		str.append("PLANNED UPDATES \n");
-		str.append("-Update audit statistics.\n");
-		str.append("-Export statistics to documents for submissions.\n");
-		str.append("-Add backup and preventative data-loss protection");
-		
-		notePane.setText(str.toString());
-		
-		JOptionPane.showMessageDialog(null, notePane, "Release Notes", JOptionPane.INFORMATION_MESSAGE);
-	}
-	
-	private void auditNotesAction(){
-		JTextPane notePane = new JTextPane();
-		notePane.setEditable(false);
-		notePane.setBackground(getBackground());
-		
-		StringBuilder str = new StringBuilder();
-		str.append("AUDIT NOTES\n\n");
-		str.append("# of mammogram cases: \t\t\t Number of patient case entries. \n");
-		str.append("# of mammogram cases BI-RADS 0,4,5: \t Sum of cases where diagnostic category is 0, 4, or 5. \n");
-		str.append("# of biopsies performed: \t\t\t Sum of cases where biopsy is not 'N/A'. \n");
-		str.append("# of BI-RADS category 4: \t\t\t Sum of cases where diagnostic category is 4. \n");
-		str.append("# of BI-RADS category 5: \t\t\t Sum of cases where diagnostic category is 5. \n");
-		str.append("# of biopsies that were malignant: \t\t Sum of cases where biopsy result is 0 - 3. \n");
-		str.append("# of BI-RADS category 4 that were malignant: \t Sum of cases where diagnostic category is 4 and biopsy result is 0 - 3. \n");
-		str.append("# of BI-RADS category 5 that were malignant: \t Sum of cases where diagnostic category is 5 and biopsy result is 0 - 3. \n");
-		str.append("# of biopsies that were benign: \t\t Sum of cases where biopsy result is 4 - 8. \n");
-		str.append("# of BI-RADS 4 and 5 that were lost: \t\t Sum of cases where diagnostic category is 4 or 5 and biopsy result is 'N/A'. \n");
-		str.append("# of ductal carcinoma in situ: \t\t Sum of cases where biopsy result is '0:DCIS'. \n");
-		str.append("# of invasive ductal or invasive lobular: \t\t ----. \n");
-		str.append("# of invasive ducatl or lobular w/ axillary: \t ----. \n");
-		str.append("# of true positives: \t\t\t Sum of cases where diagnostic category is 4 or 5 and biopsy result is 0 - 3. \n");
-		str.append("# of false positives: \t\t\t Sum of cases where diagnostic category is 4 or 5 and biopsy result is 4 - 8. \n");
-		str.append("% of positive predictive value (BI-RADS 4): \t Sum of malignant category 4 cases divided by sum of all category 4 cases. \n");
-		str.append("% of positive predictive value (BI-RADS 5): \t Sum of malignant category 5 cases divided by sum of all category 5 cases. \n");
-		str.append("% of positive predictive value (BI-RADS 4 and 5): \t Sum of malignant category 4 and 5 cases divided by sum of all category 4 and 5 cases. \n");
-		str.append("% of cancer detection rate: \t\t ----. \n");
-		str.append("% recall rate: \t\t\t Sum of cases where neither diagnostic nor ultrasound is 'N/A' divided by the total sum of cases. \n");
-		
-		notePane.setText(str.toString());
-		
-		JOptionPane.showMessageDialog(null, notePane, "How Audit Pathology Summaries are Calculated", JOptionPane.INFORMATION_MESSAGE);
-	}
+        JTextPane notePane = new JTextPane();
+        notePane.setEditable(false);
+        notePane.setBackground(getBackground());
+        
+        StringBuilder str = new StringBuilder();
+        str.append(String.format("VER. %s\n\n", Constants.RELEASE_VERSION));
+        str.append("RELEASE NOTES\n");
+        str.append("-New Feature: Addition of Comments column for notes.\n\n");
+        str.append("-Removed: Number of birads 4/5 lost audit category.\n\n");
+        str.append("PREVIOUS VERSION NOTES\n");
+        str.append("-Bug Fix: Resolved error when editing sorted columns.\n");
+        str.append("-Update: Patient names are now editable. Duplicate patient names may be entered.\n");
+        str.append("-Update: Relocated add patient function from the 'File' menu item, into the 'Function' menu item.\n");
+        str.append("-Update: Addition of version release notes.\n");
+        str.append("-Update: Additional audit stats.\n\n");
+        str.append("KNOWN ISSUES \n");
+        str.append("-Clicking cancel on Load Record menu item automatically reloads the default record\n\n");
+        str.append("PLANNED UPDATES \n");
+        str.append("-Update audit statistics.\n");
+        str.append("-Export statistics to documents for submissions.\n");
+        str.append("-Add backup and preventative data-loss protection");
+        notePane.setText(str.toString());
+        JOptionPane.showMessageDialog(null, notePane, "Release Notes", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void auditNotesAction(){
+        JTextPane notePane = new JTextPane();
+        notePane.setEditable(false);
+        notePane.setBackground(getBackground());
+        
+        StringBuilder str = new StringBuilder();
+        str.append("AUDIT NOTES\n\n");
+        str.append("# of mammogram cases: \t\t\t Number of patient case entries. \n");
+        str.append("# of mammogram cases BI-RADS 0,4,5: \t Sum of cases where diagnostic category is 0, 4, or 5. \n");
+        str.append("# of biopsies performed: \t\t\t Sum of cases where biopsy is not 'N/A'. \n");
+        str.append("# of BI-RADS category 4: \t\t\t Sum of cases where diagnostic category is 4. \n");
+        str.append("# of BI-RADS category 5: \t\t\t Sum of cases where diagnostic category is 5. \n");
+        str.append("# of biopsies that were malignant: \t\t Sum of cases where biopsy result is 0 - 3. \n");
+        str.append("# of BI-RADS category 4 that were malignant: \t Sum of cases where diagnostic category is 4 and biopsy result is 0 - 3. \n");
+        str.append("# of BI-RADS category 5 that were malignant: \t Sum of cases where diagnostic category is 5 and biopsy result is 0 - 3. \n");
+        str.append("# of biopsies that were benign: \t\t Sum of cases where biopsy result is 4 - 8. \n");
+        str.append("# of BI-RADS 4 and 5 that were lost: \t\t Sum of cases where diagnostic category is 4 or 5 and biopsy result is 'N/A'. \n");
+        str.append("# of ductal carcinoma in situ: \t\t Sum of cases where biopsy result is '0:DCIS'. \n");
+        str.append("# of invasive ductal or invasive lobular: \t\t ----. \n");
+        str.append("# of invasive ducatl or lobular w/ axillary: \t ----. \n");
+        str.append("# of true positives: \t\t\t Sum of cases where diagnostic category is 4 or 5 and biopsy result is 0 - 3. \n");
+        str.append("# of false positives: \t\t\t Sum of cases where diagnostic category is 4 or 5 and biopsy result is 4 - 8. \n");
+        str.append("% of positive predictive value (BI-RADS 4): \t Sum of malignant category 4 cases divided by sum of all category 4 cases. \n");
+        str.append("% of positive predictive value (BI-RADS 5): \t Sum of malignant category 5 cases divided by sum of all category 5 cases. \n");
+        str.append("% of positive predictive value (BI-RADS 4 and 5): \t Sum of malignant category 4 and 5 cases divided by sum of all category 4 and 5 cases. \n");
+        str.append("% of cancer detection rate: \t\t Sum of malignant biopsies divided by all cases. \n");
+        str.append("% recall rate: \t\t\t Sum of cases where neither diagnostic nor ultrasound is 'N/A' divided by the total sum of cases. \n");
+        notePane.setText(str.toString());
+        JOptionPane.showMessageDialog(null, notePane, "How Audit Pathology Summaries are Calculated", JOptionPane.INFORMATION_MESSAGE);
+    }
 	
 	
 	/**

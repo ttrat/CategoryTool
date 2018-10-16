@@ -6,7 +6,7 @@ public class Patient {
 	
 	public Patient(){}
 	
-	public Patient(String name, int screening_category, int diagnostic_category, int ultrasound, int biopsy, Date date){
+	public Patient(String name, int screening_category, int diagnostic_category, int ultrasound, int biopsy, Date date, String comments){
 		this.deleted = false;
 		this.added = false;
 		this.edited = false;
@@ -16,6 +16,7 @@ public class Patient {
 		this.ultrasound = ultrasound;
 		this.biopsy_result = biopsy;
 		this.date = date;
+		this.comments = comments;
 	}
 	
 	private long id;
@@ -29,6 +30,7 @@ public class Patient {
 	private int ultrasound;
 	private Date date;
 	private int biopsy_result;
+	private String comments;
 	
 	public long getId() {
 		return id;
@@ -101,6 +103,14 @@ public class Patient {
 
 	public int getBiopsy_result() {
 		return biopsy_result;
+	}
+
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
 	}
 
 }
