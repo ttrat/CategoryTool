@@ -224,6 +224,12 @@ public class RecordWriter {
 	         if(element.getAttribute("provider") == null){
 	        	 element.setAttribute("provider", "");
 	         }
+	         if(element.getAttribute("comments") == null){
+	        	 element.setAttribute("comments", "");
+	         }
+	         if(element.getAttribute("biopsy") == null){
+	        	 element.setAttribute("biopsy", "-1");
+	         }
         }
 	}
 	
