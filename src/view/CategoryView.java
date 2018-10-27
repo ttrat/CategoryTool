@@ -57,6 +57,7 @@ public class CategoryView extends JPanel implements WindowListener{
 	
 	private static final String ADD_ACTION = "add";
 	private static final String LOAD_ACTION = "load";
+	private static final String CREATE_ACTION = "create";
 	private static final String SAVE_ACTION = "save";
 	private static final String EXIT_ACTION = "exit";
 	private static final String VERSION_NOTES_ACTION = "notes";
@@ -229,6 +230,35 @@ public class CategoryView extends JPanel implements WindowListener{
 	private void loadAction(){
 		
 		controller.actionBrowseFile();
+		
+		updateGUI();
+	}
+	
+	/*private void newRecordAction() {
+		
+		JTextField recordFileName = new JTextField();
+		
+		final JComponent[] inputs = new JComponent[] {
+				new JLabel("New Record File Name"),
+				recordFileName
+		};
+		
+		int c = JOptionPane.showConfirmDialog(null, inputs, "New Record", JOptionPane.PLAIN_MESSAGE);
+		
+		String recordPath = System.getProperty("user.home")+File.separator+recordFileName.getText()+".xml"; 
+		
+		controller.setRecordsLocation(recordPath);
+		controller.setPatients(new ArrayList<Patient>());
+		controller.save();
+		controller.loadRecords();
+		
+		
+		updateGUI();
+	}*/
+	
+	private void newRecordAction() {
+		
+		controller.actionBrowseSaveFile();
 		
 		updateGUI();
 	}
@@ -493,6 +523,8 @@ public class CategoryView extends JPanel implements WindowListener{
 				addAction();
 			else if(action.equals(LOAD_ACTION))
 				loadAction();
+			else if(action.equals(CREATE_ACTION))
+				newRecordAction();
 			else if(action.equals(SAVE_ACTION))
 				saveAction();
 			else if(action.equals(EXIT_ACTION))
@@ -535,6 +567,12 @@ public class CategoryView extends JPanel implements WindowListener{
 	        exitMenuItem.setActionCommand(EXIT_ACTION);
 	        exitMenuItem.addActionListener(handler);
 	        
+	        JMenuItem createMenuItem = new JMenuItem("New Record...");
+	        createMenuItem.setMnemonic(KeyEvent.VK_E);
+	        createMenuItem.setToolTipText("Create new record file");
+	        createMenuItem.setActionCommand(CREATE_ACTION);
+	        createMenuItem.addActionListener(handler);
+	        
 	        JMenuItem loadMenuItem = new JMenuItem("Load Record...");
 	        loadMenuItem.setMnemonic(KeyEvent.VK_E);
 	        loadMenuItem.setToolTipText("Load existing record file");
@@ -566,6 +604,7 @@ public class CategoryView extends JPanel implements WindowListener{
 	        auditStatsReportMenuItem.addActionListener(handler);
 	
 //	        file.add(addMenuItem);
+	        file.add(createMenuItem);
 	        file.add(loadMenuItem);
 	        file.add(saveMenuItem);
 	        file.add(exitMenuItem);

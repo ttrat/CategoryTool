@@ -1,11 +1,17 @@
 package controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import dao.RecordReader;
 import dao.RecordWriter;
@@ -87,21 +93,13 @@ public class CategoryController {
 	}
 	
 	public void actionBrowseFile(){
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("Category Tool Files", "xml");
 		JFileChooser chooser = new JFileChooser("");
+		chooser.setFileFilter(filter);
     	chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
     	chooser.setMultiSelectionEnabled(false);
     	chooser.removeChoosableFileFilter(chooser.getAcceptAllFileFilter());
-//    	chooser.setFileFilter(new FileFilter(){
-//			
-//			public boolean accept(File f) {
-//				return f.getName().toLowerCase().endsWith(".xml") || f.isDirectory();
-//			}
-//			
-//			public String getDescription() {
-//				return "XML_FILES_ONLY";
-//			}
-//    		
-//    	});
+    	
 	    int returnVal = chooser.showOpenDialog(new JFrame());
 	    if(returnVal == JFileChooser.APPROVE_OPTION) {
 	    	if(chooser.getSelectedFile().getAbsoluteFile().toString().toLowerCase().endsWith(".xml")){
@@ -110,6 +108,29 @@ public class CategoryController {
 	    }
 	    
 	    loadRecords();
+	}
+	
+	public void actionBrowseSaveFile(){
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("Category Tool Files", "xml");
+		JFileChooser chooser = new JFileChooser("");
+		chooser.setFileFilter(filter);
+    	chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+    	chooser.setMultiSelectionEnabled(false);
+    	chooser.removeChoosableFileFilter(chooser.getAcceptAllFileFilter());
+    	
+	    int returnVal = chooser.showSaveDialog(new JFrame());
+	    if(returnVal == JFileChooser.APPROVE_OPTION) {
+	    	String newFileName = chooser.getSelectedFile().getAbsoluteFile().toString();
+	    	if(!newFileName.toLowerCase().endsWith(".xml")){
+	    		newFileName = newFileName + ".xml";
+	    	}
+	    	setRecordsLocation(newFileName);
+	    }
+	    
+		setPatients(new ArrayList<Patient>());
+		save();
+		loadRecords();
+	    
 	}
 	
 	public List<Patient> limitByDates(){

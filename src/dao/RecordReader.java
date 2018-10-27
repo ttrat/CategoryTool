@@ -1,5 +1,6 @@
 package dao;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -38,6 +39,12 @@ public class RecordReader {
 	public void readRecord(String recordPath) throws SAXException, IOException {
 		
 		this.recordHandler = new RecordHandler();
+		
+//		File file = new File(recordPath);
+//		if(!file.exists())
+//		{
+//			file.createNewFile();
+//		}
 		
 		saxParser.parse(recordPath, recordHandler);
 		
