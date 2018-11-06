@@ -20,6 +20,7 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -35,6 +36,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.JToolBar;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -48,7 +50,7 @@ import net.sourceforge.jdatepicker.impl.UtilDateModel;
 
 import model.Constants;
 import model.Patient;
-
+import model.Provider;
 import controller.CategoryController;
 
 public class CategoryView extends JPanel implements WindowListener{
@@ -62,6 +64,8 @@ public class CategoryView extends JPanel implements WindowListener{
 	private static final String EXIT_ACTION = "exit";
 	private static final String VERSION_NOTES_ACTION = "notes";
 	private static final String AUDIT_NOTES_ACTION = "audit_notes";
+	private static final String ADD_PROVIDER_ACTION = "add_provider";
+	private static final String CHANGE_PROVIDER_ACTION = "change_provider";
 	
 //	private static final String DELETE_ACTION = "delete";
 	private static final String DATE_CHANGE_ACTION = "Date selected";
@@ -99,6 +103,7 @@ public class CategoryView extends JPanel implements WindowListener{
 	private final PatientTableModel patientTableModel;
 	private final StatisticsTableModel statsTableModel;
 	private final AuditTableModel auditTableModel;
+	private JComboBox<Provider> providerBox;
 	
 	private JDatePickerImpl startDate;
 	private JDatePickerImpl endDate;
@@ -127,6 +132,8 @@ public class CategoryView extends JPanel implements WindowListener{
 		
 		statsTableModel = new StatisticsTableModel();
 		auditTableModel = new AuditTableModel();
+		
+		providerBox = new JComboBox<Provider>();
 		
 		controller = new CategoryController();
 		
@@ -338,6 +345,31 @@ public class CategoryView extends JPanel implements WindowListener{
         notePane.setText(str.toString());
         JOptionPane.showMessageDialog(null, notePane, "How Audit Pathology Summaries are Calculated", JOptionPane.INFORMATION_MESSAGE);
     }
+    
+    private void addProviderAction() {
+    	
+    	JTextField providerNameText = new JTextField();
+    	
+    	final JComponent[] inputs = new JComponent[] {
+    			new JLabel("New Provider Name"),
+    			providerNameText
+    	};
+    	
+    	JOptionPane.showConfirmDialog(null, inputs, "New Provider", JOptionPane.PLAIN_MESSAGE);
+    	
+    	String providerName = providerNameText.getText();
+    	String cleanProviderName = providerName.replaceAll(" ", "_");
+    	String recordFilePath = System.getProperty("user.home")+File.separator+cleanProviderName+".xml"; 
+    	
+    	Provider provider = new Provider(providerName, recordFilePath);
+    	
+    	controller.addProvider(provider);
+    	controller.loadProviders();
+    	
+    	providerBox.addItem(provider);
+		providerBox.repaint();
+    	
+    }
 	
 	
 	/**
@@ -371,6 +403,7 @@ public class CategoryView extends JPanel implements WindowListener{
 			String recordPath = System.getProperty("user.home")+File.separator+"default_record.xml"; 
 			controller.setRecordsLocation(recordPath);
 			controller.loadRecords();
+			controller.loadProviders();
 			patientTableModel.getRows().addAll(controller.getPatients());
 			
 			statsTableModel.getRows().addAll(controller.getPatients());
@@ -454,7 +487,41 @@ public class CategoryView extends JPanel implements WindowListener{
 		statPanel.add(auditPanel);
 		
 		JScrollPane tablePane = new JScrollPane(patientTable);
+		
+		JToolBar toolBar = new JToolBar();
+		
+//		ImageIcon addProviderIcon = new ImageIcon(cl.getResource("images/icon_delete_sm_02.png"));
+//		JButton addProviderBtn = new JButton(addProviderIcon);
+		JButton addProviderBtn = new JButton("+");
+		addProviderBtn.setActionCommand(ADD_PROVIDER_ACTION);
+		addProviderBtn.setToolTipText("Add new provider");
+		addProviderBtn.addActionListener(handler);
+		
+		List<Provider> providers = controller.getProviders();
+		
+		JComboBox<Provider> providerBox = new JComboBox<Provider>();
+		providerBox.setActionCommand(CHANGE_PROVIDER_ACTION);
+		providerBox.setToolTipText("Select a provider");
+		providerBox.addActionListener(handler);
+		providerBox.addActionListener(new ActionListener() {
+		      public void actionPerformed(ActionEvent e) {
+		    	  controller.setRecordsLocation(((Provider)providerBox.getSelectedItem()).getRecordFile());
+		    	  controller.setPatients(new ArrayList<Patient>());
+		    	  controller.loadRecords();
+		    	  updateGUI();
+		      }
+		    });
+		
+		for(Provider provider : providers) {
+			providerBox.addItem(provider);
+		}
+		
+		toolBar.add(providerBox);
+		toolBar.add(addProviderBtn);
+		
+		this.providerBox = providerBox;
 	    
+		frame.getContentPane().add(toolBar, BorderLayout.NORTH);
 		frame.getContentPane().add(tablePane, BorderLayout.CENTER);
 		frame.getContentPane().add(statPanel, BorderLayout.EAST);
 		
@@ -535,6 +602,8 @@ public class CategoryView extends JPanel implements WindowListener{
 				versionNotesAction();
 			else if(action.equals(AUDIT_NOTES_ACTION))
 				auditNotesAction();
+			else if(action.equals(ADD_PROVIDER_ACTION))
+				addProviderAction();
 		}
 	}
 	

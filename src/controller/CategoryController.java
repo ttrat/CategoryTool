@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,21 +14,29 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.jdom2.JDOMException;
+
+import dao.ProviderReader;
+import dao.ProviderWriter;
 import dao.RecordReader;
 import dao.RecordWriter;
 
 import model.AuditStats;
 import model.Patient;
+import model.Provider;
 
 public class CategoryController {
 	
 	private List<Patient> patients = new ArrayList<Patient>(0);
+	private List<Provider> providers = new ArrayList<Provider>(0);
 	
 	private Date startDate;
 	private Date endDate;
 	
 	private RecordReader reader = new RecordReader();
 	private RecordWriter writer = new RecordWriter();
+	private ProviderReader providerReader = new ProviderReader();
+	private ProviderWriter providerWriter = new ProviderWriter();
 	
 	private AuditStats audits = new AuditStats();
 	
@@ -44,6 +53,12 @@ public class CategoryController {
 	}
 	public void setPatients(List<Patient> patients) {
 		this.patients = patients;
+	}
+	public List<Provider> getProviders() {
+		return providers;
+	}
+	public void setProviders(List<Provider> providers) {
+		this.providers = providers;
 	}
 	public Date getStartDate() {
 		return startDate;
@@ -72,6 +87,30 @@ public class CategoryController {
 			this.setPatients(reader.getPatients());
 			
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void loadProviders(){
+		try {
+			
+			providerReader.readProviderRecord();
+			
+			this.setProviders(providerReader.getProviders());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void addProvider(Provider provider) {
+		try {
+			
+			providerWriter.addProvider(provider);
+			
+			writer.updateRecords(new ArrayList<Patient>(), provider.getRecordFile());
+			
+		} catch (IOException | JDOMException e) {
 			e.printStackTrace();
 		}
 	}
