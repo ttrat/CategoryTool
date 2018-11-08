@@ -663,12 +663,14 @@ public class CategoryView extends JPanel implements WindowListener{
 	        createMenuItem.setToolTipText("Create new record file");
 	        createMenuItem.setActionCommand(CREATE_ACTION);
 	        createMenuItem.addActionListener(handler);
+	        createMenuItem.setEnabled(false);
 	        
 	        JMenuItem loadMenuItem = new JMenuItem("Load Record...");
 	        loadMenuItem.setMnemonic(KeyEvent.VK_E);
 	        loadMenuItem.setToolTipText("Load existing record file");
 	        loadMenuItem.setActionCommand(LOAD_ACTION);
 	        loadMenuItem.addActionListener(handler);
+	        loadMenuItem.setEnabled(false);
 	        
 	        JMenuItem saveMenuItem = new JMenuItem("Save Record...");
 	        saveMenuItem.setMnemonic(KeyEvent.VK_E);
