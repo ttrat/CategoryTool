@@ -355,7 +355,9 @@ public class CategoryView extends JPanel implements WindowListener{
     			providerNameText
     	};
     	
-    	JOptionPane.showConfirmDialog(null, inputs, "New Provider", JOptionPane.PLAIN_MESSAGE);
+    	int returnValue = -1;
+    	
+    	returnValue = JOptionPane.showConfirmDialog(null, inputs, "New Provider", JOptionPane.PLAIN_MESSAGE);
     	
     	String providerName = providerNameText.getText();
     	String cleanProviderName = providerName.replaceAll(" ", "_");
@@ -363,11 +365,16 @@ public class CategoryView extends JPanel implements WindowListener{
     	
     	Provider provider = new Provider(providerName, recordFilePath);
     	
-    	controller.addProvider(provider);
-    	controller.loadProviders();
-    	
-    	providerBox.addItem(provider);
-		providerBox.repaint();
+    	if(returnValue == JOptionPane.OK_OPTION && !providerName.isEmpty()) {
+	    	controller.addProvider(provider);
+	    	controller.loadProviders();
+	    	
+	    	providerBox.addItem(provider);
+			providerBox.repaint();
+    	}
+//    	else if(returnValue == JOptionPane.OK_OPTION && providerName.isEmpty()) {
+//    		
+//    	}
     	
     }
 	
@@ -490,9 +497,10 @@ public class CategoryView extends JPanel implements WindowListener{
 		
 		JToolBar toolBar = new JToolBar();
 		
-//		ImageIcon addProviderIcon = new ImageIcon(cl.getResource("images/icon_delete_sm_02.png"));
-//		JButton addProviderBtn = new JButton(addProviderIcon);
-		JButton addProviderBtn = new JButton("+");
+		ClassLoader cl = this.getClass().getClassLoader();
+		ImageIcon addProviderIcon = new ImageIcon(cl.getResource("images/icon_add.png"));
+		JButton addProviderBtn = new JButton(addProviderIcon);
+//		JButton addProviderBtn = new JButton("+");
 		addProviderBtn.setActionCommand(ADD_PROVIDER_ACTION);
 		addProviderBtn.setToolTipText("Add new provider");
 		addProviderBtn.addActionListener(handler);
@@ -500,6 +508,7 @@ public class CategoryView extends JPanel implements WindowListener{
 		List<Provider> providers = controller.getProviders();
 		
 		JComboBox<Provider> providerBox = new JComboBox<Provider>();
+		
 		providerBox.setActionCommand(CHANGE_PROVIDER_ACTION);
 		providerBox.setToolTipText("Select a provider");
 		providerBox.addActionListener(handler);
@@ -516,8 +525,21 @@ public class CategoryView extends JPanel implements WindowListener{
 			providerBox.addItem(provider);
 		}
 		
-		toolBar.add(providerBox);
-		toolBar.add(addProviderBtn);
+		JPanel providerPanel = new JPanel();
+		providerPanel.setLayout(new BoxLayout(providerPanel, BoxLayout.X_AXIS));
+//		providerPanel.setMaximumSize(new Dimension(900, 100));
+		providerPanel.setBorder (BorderFactory.createTitledBorder (BorderFactory.createLineBorder(Color.BLACK),
+                "[Select Provider]",
+                TitledBorder.CENTER,
+                TitledBorder.TOP));
+		
+		providerPanel.add(providerBox);
+		providerPanel.add(addProviderBtn);
+		
+//		toolBar.add(providerBox);
+//		toolBar.add(addProviderBtn);
+		
+		toolBar.add(providerPanel);
 		
 		this.providerBox = providerBox;
 	    
