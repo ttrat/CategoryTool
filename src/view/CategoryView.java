@@ -365,7 +365,7 @@ public class CategoryView extends JPanel implements WindowListener{
     	
     	Provider provider = new Provider(providerName, recordFilePath);
     	
-    	if(returnValue == JOptionPane.OK_OPTION && !providerName.isEmpty()) {
+    	if(returnValue == JOptionPane.OK_OPTION && !providerName.isEmpty() && !providerName.equals("providers")) {
 	    	controller.addProvider(provider);
 	    	controller.loadProviders();
 	    	

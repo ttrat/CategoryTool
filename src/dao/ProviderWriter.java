@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.StringReader;
 import java.util.Iterator;
 import java.util.List;
 
@@ -28,16 +29,20 @@ public class ProviderWriter {
 	
 	
 	private static final String DEFAULT_RECORD_PATH = System.getProperty("user.home")+File.separator+"default_record.xml";
-	private static String PROVIDER_RECORD_PATH = "";
+	private static String PROVIDER_RECORD_PATH = System.getProperty("user.home")+File.separator+"providers.xml";
 	
 	public ProviderWriter() {
-//		ClassLoader loader = Thread.currentThread().getContextClassLoader();
-//		File file = new File(loader.getResource("Providers.xml").getFile());
-		File file = new File ("resources/Providers.xml");
-		PROVIDER_RECORD_PATH = file.getAbsolutePath();
 		
 		try {
 			File input = new File(PROVIDER_RECORD_PATH);
+			
+			if(!input.exists()){
+	        	input.createNewFile();
+	        	String myxml = "<providers></providers>";
+	        	document = builder.build(new StringReader(myxml));
+	        	addProvider(new Provider(findMax()+1, "Melissa Agness", DEFAULT_RECORD_PATH));
+	        }
+			
 			document = builder.build(input);
 		}catch(Exception e) {
 			e.printStackTrace();

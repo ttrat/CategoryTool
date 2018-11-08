@@ -19,7 +19,7 @@ import model.Provider;
 public class ProviderReader {
 	
 	private static final String DEFAULT_RECORD_PATH = System.getProperty("user.home")+File.separator+"default_record.xml";
-	private static String PROVIDER_RECORD_PATH = "";
+	private static String PROVIDER_RECORD_PATH = System.getProperty("user.home")+File.separator+"providers.xml";
 	
 	private List<Provider> providers = new ArrayList<Provider>();
 	
@@ -32,11 +32,6 @@ public class ProviderReader {
 			
 			SAXParserFactory factory = SAXParserFactory.newInstance();
 			saxParser = factory.newSAXParser();
-			
-//			ClassLoader loader = Thread.currentThread().getContextClassLoader();
-//			File file = new File(loader.getResource("Providers.xml").getFile());
-			File file = new File ("resources/Providers.xml");
-			PROVIDER_RECORD_PATH = file.getAbsolutePath();
 			
 		}catch(Exception e){
 			e.printStackTrace();
