@@ -1,11 +1,10 @@
 package dao;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.xml.parsers.SAXParser;
@@ -35,10 +34,9 @@ public class RecordReader {
 			e.printStackTrace();
 		}
 	}
-	
+
+	//Add capability to parse patients from multiple records
 	public void readRecord(String recordPath) throws SAXException, IOException {
-		
-		this.recordHandler = new RecordHandler();
 		
 //		File file = new File(recordPath);
 //		if(!file.exists())
@@ -46,9 +44,18 @@ public class RecordReader {
 //			file.createNewFile();
 //		}
 		
-		saxParser.parse(recordPath, recordHandler);
+		this.patients = new ArrayList<Patient>();
 		
-		this.patients = recordHandler.getPatients();
+		List<String> paths = Arrays.asList(recordPath.split("\\s*,\\s*"));
+		
+		for(String path : paths) {
+			this.recordHandler = new RecordHandler();
+			
+			saxParser.parse(path, recordHandler);
+			
+			this.patients.addAll(recordHandler.getPatients());
+		}
+		
 	}
 	
 	

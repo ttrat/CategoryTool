@@ -521,9 +521,15 @@ public class CategoryView extends JPanel implements WindowListener{
 		      }
 		    });
 		
+		List<String> providerPaths = new ArrayList<String>();
+		
 		for(Provider provider : providers) {
 			providerBox.addItem(provider);
+			providerPaths.add(provider.getRecordFile());
 		}
+		
+		Provider allProvider = new Provider("All Providers", String.join(",", providerPaths));
+		providerBox.addItem(allProvider);
 		
 		JPanel providerPanel = new JPanel();
 		providerPanel.setLayout(new BoxLayout(providerPanel, BoxLayout.X_AXIS));
