@@ -514,6 +514,13 @@ public class CategoryView extends JPanel implements WindowListener{
 		providerBox.addActionListener(handler);
 		providerBox.addActionListener(new ActionListener() {
 		      public void actionPerformed(ActionEvent e) {
+		    	  if(((Provider)providerBox.getSelectedItem()).getName().equals("All Providers")) {
+		    		  frame.getJMenuBar().getMenu(1).getMenuComponent(0).setEnabled(false);
+		    	  }
+		    	  else {
+		    		  frame.getJMenuBar().getMenu(1).getMenuComponent(0).setEnabled(true);
+		    	  }
+		    	  
 		    	  controller.setRecordsLocation(((Provider)providerBox.getSelectedItem()).getRecordFile());
 		    	  controller.setPatients(new ArrayList<Patient>());
 		    	  controller.loadRecords();
